@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oasis - Statues</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a1a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            background: #1a1a1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-icons button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .content-wrapper {
+            position: relative;
+            height: calc(100vh - 120px);
+            padding: 0;
+            margin: 0;
+        }
+
+        .statues-title {
+            font-size: clamp(8rem, 18vw, 15rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 0.85;
+            text-transform: uppercase;
+            position: absolute;
+            left: 50%;
+            top: 35%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .side-text {
+            position: absolute;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 240px;
+            z-index: 2;
+        }
+
+        .side-text.left {
+            left: 3rem;
+            top: 38%;
+        }
+
+        .side-text.right {
+            right: 3rem;
+            top: 38%;
+            text-align: right;
+        }
+
+        .statue-card {
+            position: absolute;
+            left: 50%;
+            top: 52%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 550px;
+            z-index: 10;
+        }
+
+        .statue-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(60, 60, 60, 0.3), rgba(40, 40, 40, 0.3));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .statue-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.95;
+        }
+
+        .glass-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 1rem;
+            background: white;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #f0f0f0;
+        }
+
+        .pagination {
+            position: absolute;
+            bottom: 3rem;
+            left: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2;
+        }
+
+        .page-number {
+            font-size: 1.2rem;
+            opacity: 0.6;
+        }
+
+        .progress-bar {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 30%;
+            height: 100%;
+            background: white;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            right: 3rem;
+            font-size: 2rem;
+            opacity: 0.4;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        .about-section {
+            background: white;
+            color: #1a1a1a;
+            padding: 5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .about-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            max-width: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .statues-title {
+                font-size: 4rem;
+            }
+
+            .statue-card {
+                width: 90%;
+                height: 500px;
+            }
+
+            .side-text {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero-section">
+        <nav class="navbar">
+            <div class="logo">Oasis</div>
+            <div class="nav-icons">
+                <button>🔍</button>
+                <button>☰</button>
+            </div>
+        </nav>
+
+        <div class="content-wrapper">
+            <h1 class="statues-title">STATUES</h1>
+
+            <div class="side-text left">
+                Unique figurines: give art to your<br>loved ones!
+            </div>
+
+            <div class="side-text right">
+                Collectible figurines: collect your<br>own story of beauty.
+            </div>
+
+            <div class="statue-card">
+                <div class="statue-image-wrapper">
+                    <svg class="statue-image" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="statueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#d0d0d0;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#a0a0a0;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Statue base -->
+                        <ellipse cx="200" cy="550" rx="120" ry="30" fill="#404040" />
+                        <!-- Main body -->
+                        <path
+                            d="M 200 200 Q 170 250 180 350 L 180 500 Q 180 540 200 550 Q 220 540 220 500 L 220 350 Q 230 250 200 200 Z"
+                            fill="url(#statueGrad)" />
+                        <!-- Head -->
+                        <ellipse cx="200" cy="180" rx="50" ry="60" fill="url(#statueGrad)" />
+                        <!-- Butterfly crown 1 -->
+                        <path d="M 180 140 Q 170 130 165 135 Q 160 140 170 145 Q 175 150 180 145 Z" fill="#505050" />
+                        <path d="M 180 140 Q 185 130 190 135 Q 195 140 185 145 Q 180 150 180 145 Z" fill="#606060" />
+                        <!-- Butterfly crown 2 -->
+                        <path d="M 200 130 Q 190 120 185 125 Q 180 130 190 135 Q 195 140 200 135 Z" fill="#505050" />
+                        <path d="M 200 130 Q 205 120 210 125 Q 215 130 205 135 Q 200 140 200 135 Z" fill="#606060" />
+                        <!-- Butterfly crown 3 -->
+                        <path d="M 220 140 Q 215 130 210 135 Q 205 140 215 145 Q 220 150 220 145 Z" fill="#505050" />
+                        <path d="M 220 140 Q 230 130 235 135 Q 240 140 230 145 Q 225 150 220 145 Z" fill="#606060" />
+                        <!-- Necklace -->
+                        <ellipse cx="200" cy="230" rx="35" ry="8" fill="#303030" />
+                        <circle cx="180" cy="232" r="3" fill="#505050" />
+                        <circle cx="190" cy="233" r="3" fill="#505050" />
+                        <circle cx="200" cy="233" r="3" fill="#505050" />
+                        <circle cx="210" cy="233" r="3" fill="#505050" />
+                        <circle cx="220" cy="232" r="3" fill="#505050" />
+                    </svg>
+
+                    <div class="glass-overlay">
+                        <div class="product-info">
+                            <span class="product-name">Naivety</span>
+                            <span class="product-price">799,99 $</span>
+                        </div>
+                        <button class="add-to-cart">
+                            🔒 Add To Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <span class="page-number">01</span>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">↓</div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <h2 class="about-title">ABOUT</h2>
+        <p class="about-text">Welcome to Oasis</p>
+    </section>
+</body>
+
+</html>
