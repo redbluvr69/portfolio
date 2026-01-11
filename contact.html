@@ -100,11 +100,11 @@
     .hero-title {
       grid-column: span 4;
       background: var(--bg);
-      padding: 0;
+      padding: 1rem 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      overflow: visible;
       min-height: 180px;
       /* Ensure enough height for the big text */
     }
@@ -112,13 +112,17 @@
     h1 {
       margin: 0;
       font-family: 'Archivo Black', sans-serif;
-      font-size: clamp(2.5rem, 11.9vw, 10rem);
-      line-height: 1;
+      font-size: clamp(2.5rem, 10vw, 10rem);
+      line-height: 1.1;
       /* Better vertical alignment */
       text-transform: uppercase;
       text-align: center;
       letter-spacing: -0.04em;
-      white-space: nowrap;
+      white-space: normal;
+      /* Allow wrapping on smaller screens */
+      word-wrap: break-word;
+      padding: 0 1rem;
+      /* Add horizontal padding to prevent cutoff */
     }
 
     /* Contact Detail Cards */
