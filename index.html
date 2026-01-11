@@ -1160,6 +1160,7 @@
                 font-size: clamp(2rem, 12vw, 8rem);
                 opacity: 0.04;
             }
+
             /* tighter tools grid for very small screens */
             .tools-grid {
                 grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
@@ -1233,149 +1234,184 @@
             .services {
                 margin-top: 1.25rem;
             }
-            @media (max-width: 480px) {
-    /* ... existing styles ... */
+        }
 
-    /* 1. Reduce the massive space around the "Initial Portfolio" heading */
-    .about-section {
-        margin: 1rem auto !important; /* Reduced from 1.5rem */
-    }
+        @media (max-width: 480px) {
+            /* ... existing styles ... */
 
-    .about-grid {
-        gap: 0.5rem !important; /* Tighten gap between title and description */
-        margin-bottom: 1rem !important;
-    }
+            /* 1. Reduce the massive space around the "Initial Portfolio" heading */
+            .about-section {
+                margin: 1rem auto !important;
+                /* Reduced from 1.5rem */
+            }
 
-    .about-title {
-        font-size: 2.2rem !important; /* Scale down the container font-size */
-        margin-bottom: 0.5rem !important;
-    }
+            .about-grid {
+                gap: 0.5rem !important;
+                /* Tighten gap between title and description */
+                margin-bottom: 1rem !important;
+            }
 
-    /* 2. Adjust the specific parts of the title to prevent overlapping/extra height */
-    .initial-part {
-        font-size: 1.1em !important;
-        letter-spacing: -1px !important;
-    }
+            .about-title {
+                font-size: 2.2rem !important;
+                /* Scale down the container font-size */
+                margin-bottom: 0.5rem !important;
+            }
 
-    .portfolio-part {
-        font-size: 1.2em !important;
-        top: 0.1em !important; /* Pull the script font closer to the baseline */
-        left: -0.1em !important;
-    }
+            /* 2. Adjust the specific parts of the title to prevent overlapping/extra height */
+            .initial-part {
+                font-size: 1.1em !important;
+                letter-spacing: -1px !important;
+            }
 
-    /* 3. Remove the divider completely on mobile to save vertical space */
-    .about-divider {
-        display: none;
-    }
+            .portfolio-part {
+                font-size: 1.2em !important;
+                top: 0.1em !important;
+                /* Pull the script font closer to the baseline */
+                left: -0.1em !important;
+            }
 
-    /* 4. Tighten the description text */
-    .about-description {
-        font-size: 0.85rem !important;
-        line-height: 1.4 !important;
-    }
-    @media (max-width: 480px) {
-    /* ... existing mobile styles ... */
+            /* 3. Remove the divider completely on mobile to save vertical space */
+            .about-divider {
+                display: none;
+            }
 
-    .brands-section {
-        padding: 1.5rem 0.5rem !important; /* Reduce side padding to give logos more room */
-    }
+            /* 4. Tighten the description text */
+            .about-description {
+                font-size: 0.85rem !important;
+                line-height: 1.4 !important;
+            }
+        }
 
-    .brands-grid {
-        display: flex !important;
-        flex-wrap: nowrap !important; /* Force all items onto one line */
-        justify-content: space-between !important; 
-        gap: 0.5rem !important; /* Minimal gap to prevent touching */
-        align-items: center !important;
-    }
+        @media (max-width: 480px) {
+            /* ... existing mobile styles ... */
 
-    .brand-item {
-        flex: 1; /* Ensure each item takes up equal space */
-        display: flex;
-        justify-content: center;
-    }
+            .brands-section {
+                padding: 1.5rem 0.5rem !important;
+                /* Reduce side padding to give logos more room */
+            }
 
-    .brand-logo {
-        height: auto !important; /* Allow height to scale proportionally */
-        max-height: 35px !important; /* Cap the height so they fit vertically */
-        width: 100% !important; /* Let them fill the flex container width */
-        max-width: 80px !important; /* Prevent any single logo from becoming too large */
-        object-fit: contain !important; /* Ensure logos aren't distorted */
-    }
-    @media (max-width: 480px) {
-    /* ... your other mobile styles ... */
+            .brands-grid {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                /* Force all items onto one line */
+                justify-content: space-between !important;
+                gap: 0.5rem !important;
+                /* Minimal gap to prevent touching */
+                align-items: center !important;
+            }
 
-    /* 1. Decrease the side blur power (Edge Fades) */
-    .portfolio-carousel::before,
-    .portfolio-carousel::after {
-        width: 60px !important; /* Reduced from 140px */
-    }
+            .brand-item {
+                flex: 1;
+                /* Ensure each item takes up equal space */
+                display: flex;
+                justify-content: center;
+            }
 
-    .portfolio-carousel::before {
-        background: linear-gradient(to right,
-                rgba(5, 5, 5, 0.8) 0%,
-                rgba(5, 5, 5, 0) 100%) !important;
-    }
+            .brand-logo {
+                height: auto !important;
+                /* Allow height to scale proportionally */
+                max-height: 35px !important;
+                /* Cap the height so they fit vertically */
+                width: 100% !important;
+                /* Let them fill the flex container width */
+                max-width: 80px !important;
+                /* Prevent any single logo from becoming too large */
+                object-fit: contain !important;
+                /* Ensure logos aren't distorted */
+            }
+        }
 
-    .portfolio-carousel::after {
-        background: linear-gradient(to left,
-                rgba(5, 5, 5, 0.8) 0%,
-                rgba(5, 5, 5, 0) 100%) !important;
-    }
+        @media (max-width: 480px) {
+            /* ... your other mobile styles ... */
 
-    /* 2. Decrease poster carousel size by 40% */
-    .portfolio-item {
-        min-width: 130px !important; /* ~40% reduction from 220px/mobile baseline */
-        padding: 0 5px !important; /* Tighten horizontal spacing */
-    }
+            /* 1. Decrease the side blur power (Edge Fades) */
+            .portfolio-carousel::before,
+            .portfolio-carousel::after {
+                width: 60px !important;
+                /* Reduced from 140px */
+            }
 
-    .portfolio-item img {
-        height: 220px !important; /* Scale down the height to keep aspect ratio */
-        width: auto !important;
-        filter: brightness(0.9); /* Slightly boost brightness for mobile screens */
-    }
+            .portfolio-carousel::before {
+                background: linear-gradient(to right,
+                        rgba(5, 5, 5, 0.8) 0%,
+                        rgba(5, 5, 5, 0) 100%) !important;
+            }
 
-    /* 3. Slow down the scroll slightly for better visibility on smaller posters */
-    .carousel-container {
-        animation: scroll 20s linear infinite !important;
-        gap: 12px !important;
-    }
-    @media (max-width: 480px) {
-    /* 1. Decrease overall hero section size */
-    .hero {
-        padding-top: 60px !important; /* Move content up to show more of the image */
-        height: auto !important;
-        min-height: 80vh !important;
-    }
+            .portfolio-carousel::after {
+                background: linear-gradient(to left,
+                        rgba(5, 5, 5, 0.8) 0%,
+                        rgba(5, 5, 5, 0) 100%) !important;
+            }
 
-    /* 2. Make the picture more visible */
-    .hero-image-container {
-        height: 350px !important; /* Shorter container to prevent the image from being cut off */
-        margin-top: -20px !important;
-        opacity: 1 !important; /* Ensure full visibility */
-    }
+            /* 2. Decrease poster carousel size by 40% */
+            .portfolio-item {
+                min-width: 130px !important;
+                /* ~40% reduction from 220px/mobile baseline */
+                padding: 0 5px !important;
+                /* Tighten horizontal spacing */
+            }
 
-    .hero-image {
-        object-position: center 20% !important; /* Adjusts the crop to show the face/upper body better */
-        transform: scale(0.9) !important; /* Slightly shrink the image to fit the screen better */
-    }
+            .portfolio-item img {
+                height: 220px !important;
+                /* Scale down the height to keep aspect ratio */
+                width: auto !important;
+                filter: brightness(0.9);
+                /* Slightly boost brightness for mobile screens */
+            }
 
-    /* 3. Decrease size of text elements */
-    .hero-content h1 {
-        font-size: 2.8rem !important; /* Smaller main heading */
-        margin-bottom: 0.5rem !important;
-    }
+            /* 3. Slow down the scroll slightly for better visibility on smaller posters */
+            .carousel-container {
+                animation: scroll 20s linear infinite !important;
+                gap: 12px !important;
+            }
+        }
 
-    .hero-content p {
-        font-size: 0.9rem !important; /* Smaller sub-text */
-        max-width: 280px !important;
-        margin: 0 auto 1.5rem !important;
-    }
+        @media (max-width: 480px) {
 
-    .hero-btn {
-        padding: 0.8rem 1.8rem !important; /* Smaller button */
-        font-size: 0.9rem !important;
-    }
-}
+            /* 1. Decrease overall hero section size */
+            .hero {
+                padding-top: 60px !important;
+                /* Move content up to show more of the image */
+                height: auto !important;
+                min-height: 80vh !important;
+            }
+
+            /* 2. Make the picture more visible */
+            .hero-image-container {
+                height: 350px !important;
+                /* Shorter container to prevent the image from being cut off */
+                margin-top: -20px !important;
+                opacity: 1 !important;
+                /* Ensure full visibility */
+            }
+
+            .hero-image {
+                object-position: center 20% !important;
+                /* Adjusts the crop to show the face/upper body better */
+                transform: scale(0.9) !important;
+                /* Slightly shrink the image to fit the screen better */
+            }
+
+            /* 3. Decrease size of text elements */
+            .hero-content h1 {
+                font-size: 2.8rem !important;
+                /* Smaller main heading */
+                margin-bottom: 0.5rem !important;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem !important;
+                /* Smaller sub-text */
+                max-width: 280px !important;
+                margin: 0 auto 1.5rem !important;
+            }
+
+            .hero-btn {
+                padding: 0.8rem 1.8rem !important;
+                /* Smaller button */
+                font-size: 0.9rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -1406,7 +1442,8 @@
 
                 <div class="services">
                     <div class="service-item">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <rect x="4" y="3" width="16" height="18" rx="2"></rect>
                             <line x1="8" y1="8" x2="16" y2="8"></line>
                             <line x1="8" y1="12" x2="16" y2="12"></line>
@@ -1829,7 +1866,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const p = entry.target.play && entry.target.play();
-                    if (p && p.catch) p.catch(() => {});
+                    if (p && p.catch) p.catch(() => { });
                 } else {
                     if (entry.target.pause) entry.target.pause();
                 }
@@ -1866,7 +1903,8 @@
                     <span class="footer-title">Connect</span>
                     <a href="https://www.behance.net/shashisha1" target="_blank">Behance</a>
                     <a href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
-                    <a href="https://www.linkedin.com/in/shashish-a-b2208b2b3" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/shashish-a-b2208b2b3" target="_blank"
+                        rel="noopener noreferrer">LinkedIn</a>
                     <a href="https://www.youtube.com/@shaunaka-dv9qi" target="_blank">yt</a>
                 </div>
 
