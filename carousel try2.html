@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Endless Carousel</title>
+    <style>
+        /* Custom Font Import */
+        @font-face {
+            font-family: 'Helvetica-Bold';
+            src: url('file:///F:/SMM/porfolio site/fonts/Helvetica-Bold.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'FormalScriptBold';
+            src: url('file:///F:/SMM/porfolio site/fonts/FormalScriptBold.otf') format('opentype');
+        }
+
+        /* General Page Setup */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000000;
+            font-family: sans-serif;
+            position: relative;
+        }
+
+        /* Title Text Styling */
+        .page-title {
+            font-family: 'Helvetica-Bold', sans-serif;
+            font-size: 48px;
+            color: white;
+            margin: 20px 0;
+            z-index: 10;
+        }
+
+        /* The Main Container */
+        .carousel-container {
+            display: flex;
+            gap: 15px;
+            width: 95vw;
+            height: 80vh; /* Viewport height for the visible area */
+        }
+.carousel-container {
+    position: relative; /* required for absolute positioning */
+}
+
+/* Overlay text */
+.carousel-overlay-text {
+    position: absolute;
+    bottom: -8%;             /* adjust to fine-tune vertical placement */
+    left: 2%;
+    font-family: 'FormalScriptBold', sans-serif;
+    font-size: 112.8px;
+    color: white;
+    z-index: 20;             /* higher than carousel content */
+    pointer-events: none;   /* allows hover to still pause carousel */
+    letter-spacing: 0.5px;
+}
+
+/* Ensure scrolling content stays below */
+.scroll-track {
+    position: relative;
+    z-index: 1;
+}
+
+        /* Individual Columns */
+        .column {
+            flex: 1;
+            position: relative;
+        }
+
+        /* The Moving Track */
+        .scroll-track {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            /* Animation: name | duration | timing | iteration */
+            animation: scrollUp 19.5s linear infinite;
+        }
+
+        /* Reverse direction for even columns for a cooler effect */
+        .column:nth-child(even) .scroll-track {
+            animation: scrollDown 19.5s linear infinite;
+        }
+
+        /* Image Box Styling */
+        .box {
+            width: 100%;
+            background: #000;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid #111;
+        }
+
+        .box img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Keyframes for Upward Scroll */
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(calc(-50% - 10px)); } 
+            /* -50% because we duplicated the content */
+        }
+
+        /* Keyframes for Downward Scroll */
+        @keyframes scrollDown {
+            0% { transform: translateY(calc(-50% - 10px)); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Pause on Hover */
+        .carousel-container:hover .scroll-track {
+            animation-play-state: paused;
+        }
+        .carousel-container {
+    position: relative;
+    width: 95vw;
+    height: 80vh;
+}
+
+.carousel-mask {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    mask-image: linear-gradient(
+        to bottom,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent
+    );
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent
+    );
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="carousel-container">
+                <div class="carousel-overlay-text">Print Editions</div>
+    <div class="carousel-mask">
+
+        <div class="column">
+            <div class="scroll-track">
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/GOOD KID MAAD CITY.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/hav final.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/heroes_and_villains.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/interstellar.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/GOOD KID MAAD CITY.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/hav final.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/heroes_and_villains.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/interstellar.png" alt=""></div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="scroll-track">
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/ldr ultraviolence.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/Screenshot 2024-03-11 151240.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/seedhe_maut.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/shashish independence day.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/ldr ultraviolence.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/Screenshot 2024-03-11 151240.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/seedhe_maut.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/shashish independence day.png" alt=""></div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="scroll-track">
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/TRIOLOGY.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/we_dont_trust_you.jpg" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/AOT CLUB shashish submisison.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/ASTRO W.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/TRIOLOGY.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/we_dont_trust_you.jpg" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/AOT CLUB shashish submisison.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/ASTRO W.png" alt=""></div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="scroll-track">
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/call me if your lost tyler -1.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/DONDA-1.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/DS4EVER.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/GOOD KID MAAD CITY.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/call me if your lost tyler -1.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/DONDA-1.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/DS4EVER.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/GOOD KID MAAD CITY.png" alt=""></div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="scroll-track">
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/ldr ultraviolence.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/Screenshot 2024-03-11 151240.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/seedhe_maut.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/shashish independence day.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/ldr ultraviolence.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/Screenshot 2024-03-11 151240.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/seedhe_maut.png" alt=""></div>
+                <div class="box"><img src="file:///F:/SMM/porfolio site/images/shashish independence day.png" alt=""></div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+</body>
+</html>
