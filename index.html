@@ -1412,6 +1412,68 @@
                 font-size: 0.9rem !important;
             }
         }
+        /* --- GLASSMORPHISM POPUP --- */
+.glass-popup {
+    position: fixed;
+    bottom: 30px;
+    right: -400px; /* Hidden by default */
+    width: 280px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    transition: right 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'TTCommonsLocal', sans-serif;
+}
+
+.glass-popup.show {
+    right: 30px; /* Slide in position */
+}
+
+.popup-content {
+    position: relative;
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.popup-content a {
+    color: #ff6b35; /* Matching your orange theme */
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.popup-content a:hover {
+    text-decoration: underline;
+}
+
+#close-popup {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#close-popup:hover {
+    color: white;
+}
+
+@media (max-width: 480px) {
+    .glass-popup {
+        width: 220px;
+        bottom: 100px; /* Higher up to avoid overlapping your "Connect" button */
+        font-size: 0.8rem;
+    }
+}
     </style>
 </head>
 
@@ -1694,7 +1756,6 @@
 </a>
 
 
-
         <a href="videos/ls-2.mp4" class="category-card" target="_blank">
             <video class="category-video" autoplay muted loop playsinline>
                 <source src="videos/ls-2.mp4" type="video/mp4">
@@ -1938,6 +1999,39 @@
         autoAlpha: 1,           // Switches visibility from hidden to visible
         delay: 0.2              // Slight delay for a premium feel
     });
+</script>
+<div id="github-popup" class="glass-popup">
+    <div class="popup-content">
+        <p>Visit the <a href="contact.html">Connect page</a> to find my GitHub!</p>
+        <button id="close-popup">&times;</button>
+    </div>
+</div>  
+<script>
+    const popup = document.getElementById('github-popup');
+    const closeBtn = document.getElementById('close-popup');
+
+    function togglePopup() {
+        // Show the popup
+        popup.classList.add('show');
+
+        // Stay for 5 seconds then hide
+        setTimeout(() => {
+            popup.classList.remove('show');
+        }, 5000);
+    }
+
+    // Manual close listener
+    closeBtn.addEventListener('click', () => {
+        popup.classList.remove('show');
+    });
+
+    // 3 second delay before the very first appearance
+    setTimeout(() => {
+        togglePopup();
+        
+        // After the first one shows, repeat every 20 seconds
+        setInterval(togglePopup, 20000);
+    }, 3000);
 </script>
 
 </body>
