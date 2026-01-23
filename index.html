@@ -1442,7 +1442,7 @@
 }
 
 .popup-content a {
-    color: #ff6b35; /* Matching your orange theme */
+    color: #49c8d3; /* Matching your orange theme */
     text-decoration: none;
     font-weight: 700;
 }
@@ -1474,6 +1474,31 @@
         font-size: 0.8rem;
     }
 }
+/* --- CUSTOM CURSOR --- */
+body {
+    cursor: none;
+}
+
+.custom-cursor {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ff6b35; /* matches your accent color */
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, background-color 0.2s ease;
+    z-index: 10000;
+}
+
+/* Cursor interaction */
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor {
+    transform: translate(-50%, -50%) scale(1.6);
+}
+
     </style>
 </head>
 
@@ -2030,8 +2055,27 @@
         togglePopup();
         
         // After the first one shows, repeat every 20 seconds
-        setInterval(togglePopup, 20000);
+        setInterval(togglePopup, 30000);
     }, 3000);
+</script>
+<div class="custom-cursor"></div>
+<script>
+    const cursor = document.querySelector('.custom-cursor');
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    // Scale cursor on interactive elements
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+    });
 </script>
 
 </body>
