@@ -136,7 +136,6 @@
             bottom: 0;
             /* Aligned to bottom so you "stand" on the curve */
             left: 50%;
-            transform: translateX(-50%) scale(0.77625);
             /* decreased 10% from 0.8625 */
             transform-origin: center bottom;
             width: min(80vw, 700px);
@@ -1492,24 +1491,48 @@ body {
     cursor: none;
 }
 
-.custom-cursor {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #ff6b35; /* matches your accent color */
-    border-radius: 50%;
+
+/* --- CUSTOM CURSOR STYLES --- */
+
+.cursor-dot,
+.cursor-outline {
     position: fixed;
     top: 0;
     left: 0;
-    pointer-events: none;
     transform: translate(-50%, -50%);
-    transition: transform 0.08s ease, background-color 0.2s ease;
+    border-radius: 50%;
+    pointer-events: none;
     z-index: 10000;
 }
 
-/* Cursor interaction */
-a:hover ~ .custom-cursor,
-button:hover ~ .custom-cursor {
-    transform: translate(-50%, -50%) scale(1.6);
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: #ff6b35;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid #ff6b35;
+    background: rgba(255, 107, 53, 0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0.6;
+    transition: 
+        width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.25s,
+        opacity 0.25s;
+}
+
+/* Hover expansion */
+body.hovering .cursor-outline {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 107, 53, 0.2);
+    opacity: 0.8;
+    border-color: transparent;
 }
 
     </style>
@@ -2081,24 +2104,56 @@ button:hover ~ .custom-cursor {
         setInterval(togglePopup, 30000);
     }, 3000);
 </script>
-<div class="custom-cursor"></div>
+
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
 <script>
-    const cursor = document.querySelector('.custom-cursor');
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    });
+if (!isTouchDevice) {
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    const hoverTriggers = document.querySelectorAll('a, button, .category-card, .cta-button');
 
-    // Scale cursor on interactive elements
-    document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+    let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+
+    if (cursorDot && cursorOutline) {
+
+        window.addEventListener('mousemove', (e) => { 
+            mouseX = e.clientX; 
+            mouseY = e.clientY; 
+
+            cursorDot.style.left = mouseX + "px"; 
+            cursorDot.style.top = mouseY + "px"; 
         });
-        el.addEventListener('mouseleave', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+
+        gsap.ticker.add(() => { 
+            outlineX += (mouseX - outlineX) * 0.15; 
+            outlineY += (mouseY - outlineY) * 0.15; 
+
+            cursorOutline.style.left = outlineX + "px"; 
+            cursorOutline.style.top = outlineY + "px"; 
         });
-    });
+
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => 
+                document.body.classList.add('hovering')
+            );
+            trigger.addEventListener('mouseleave', () => 
+                document.body.classList.remove('hovering')
+            );
+        });
+    }
+
+} else {
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+
+    if (cursorDot) cursorDot.style.display = 'none';
+    if (cursorOutline) cursorOutline.style.display = 'none';
+
+    document.body.style.cursor = 'auto';
+}
 </script>
 
 </body>
