@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D T-Shirt Experience</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;500;700;800&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'FormalScript';
+            src: url('./FormalScript.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'FormalScriptBold';
+            src: url('./FormalScriptBold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AgrandirWide';
+            src: url('./agrandir-wide.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #050505;
+            /* Sleek dark mode background */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            /* 
+             * Height controls how long the user has to scroll to see the full animation. 
+             * 600vh means they scroll down 6 screens to finish the video.
+             */
+            height: 600vh;
+            font-family: 'Inter', 'Outfit', sans-serif;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* The Canvas acts as our video player background */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Page Content Styles */
+        .content {
+            position: relative;
+            width: 100%;
+        }
+
+        .section {
+            height: 100vh;
+            /* Each section takes one full screen height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            /* Start hidden for scroll animations */
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #a8a8a8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .hero::before {
+            content: none;
+        }
+
+        .grain {
+            display: none;
+        }
+
+        .top-left {
+            position: absolute;
+            top: 5.2vh;
+            left: 3.4vw;
+            z-index: 5;
+            color: #fff;
+            font-size: .82rem;
+            font-weight: 600;
+            line-height: 1.05;
+            min-width: 92px;
+        }
+
+        .top-left .line {
+            width: 52px;
+            height: 1px;
+            background: #fff;
+            position: absolute;
+            left: 38px;
+            top: 23px;
+            opacity: .5;
+        }
+
+        .top-center {
+            position: absolute;
+            top: 5.6vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            text-align: center;
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            line-height: 1.18;
+            opacity: .9;
+        }
+
+        .top-right {
+            position: absolute;
+            top: 5.2vh;
+            right: 3.8vw;
+            z-index: 5;
+            text-align: right;
+            color: #fff;
+            font-size: .82rem;
+            font-weight: 600;
+            line-height: 1.05;
+            min-width: 92px;
+        }
+
+        .top-right .line {
+            width: 40px;
+            height: 1px;
+            background: #fff;
+            position: absolute;
+            right: 47px;
+            top: 23px;
+            opacity: .5;
+        }
+
+        .brand {
+            position: absolute;
+            top: 8.6vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            font-family: 'FormalScriptBold', 'FormalScript', "Cormorant Garamond", serif;
+            font-size: min(14.4vw, 238px);
+            font-style: normal;
+            color: #fff;
+            white-space: nowrap;
+            line-height: .9;
+            pointer-events: none;
+            opacity: .94;
+        }
+
+        .registered {
+            position: absolute;
+            top: 11.6vh;
+            left: calc(50% + min(25.6vw, 390px));
+            z-index: 5;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .left-panel {
+            position: absolute;
+            left: 7.5vw;
+            top: 35.2vh;
+            width: min(22vw, 300px);
+            z-index: 5;
+            color: #fff;
+        }
+
+        .left-panel h1 {
+            font-size: clamp(1.72rem, 2vw, 2.28rem);
+            line-height: .92;
+            font-weight: 800;
+            letter-spacing: .015em;
+            margin-bottom: .72rem;
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            text-transform: uppercase;
+            text-shadow: none;
+        }
+
+        .left-panel p {
+            color: #d0d0d0;
+            font-size: clamp(.68rem, .74vw, .84rem);
+            line-height: 1.16;
+            margin-bottom: 2.55rem;
+            max-width: 230px;
+            text-shadow: none;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon svg {
+            width: 21px;
+            height: 21px;
+            stroke: currentColor;
+        }
+
+        .icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .feature h3 {
+            font-size: .74rem;
+            line-height: 1;
+            margin: .24rem 0 .24rem;
+            color: #d6c08d;
+            text-transform: uppercase;
+        }
+
+        .feature span {
+            display: block;
+            max-width: 145px;
+            font-size: .69rem;
+            color: #c8c8c8;
+            line-height: 1.18;
+        }
+
+        .bottom-left {
+            position: absolute;
+            left: 7.4vw;
+            top: calc(35.2vh + 438px);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 2.1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            border: 1px solid rgba(255, 255, 255, .42);
+            padding: .42rem 1rem;
+            border-radius: 999px;
+            color: #fff;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, .03);
+            font-size: .72rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: .78rem;
+            line-height: 1;
+            min-width: 156px;
+            justify-content: center;
+        }
+
+        .website {
+            color: #fff;
+            opacity: .85;
+            font-size: .78rem;
+        }
+
+        .product-card {
+            position: absolute;
+            right: 8vw;
+            top: 31.4vh;
+            width: min(17.8vw, 284px);
+            min-width: 252px;
+            padding: 2.15rem 1.55rem 2.05rem;
+            border-radius: 1.7rem;
+            z-index: 5;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+            border: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .35);
+        }
+
+        .card-label {
+            color: #c9a86d;
+            font-size: .9rem;
+            margin-bottom: .8rem;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            font-family: 'AgrandirWide', 'Inter', sans-serif;
+            color: #fff;
+            font-size: clamp(1.8rem, 2vw, 2.45rem);
+            line-height: .92;
+            font-weight: 300;
+            margin-bottom: 1.85rem;
+            text-transform: uppercase;
+        }
+
+        .thumbs {
+            display: flex;
+            gap: .6rem;
+            margin-bottom: 1.55rem;
+        }
+
+        .thumb {
+            width: 54px;
+            height: 66px;
+            border-radius: .72rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .1);
+            opacity: .45;
+        }
+
+        .thumb.active {
+            opacity: 1;
+            border: 2px solid rgba(255, 255, 255, .8);
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .shop-btn {
+            width: 100%;
+            height: 55px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .3);
+            background: transparent;
+            color: #fff;
+            font-size: .9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.42rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .bottom-right {
+            position: absolute;
+            right: calc(8vw + 32px);
+            top: calc(31.4vh + 355px);
+            z-index: 5;
+            color: #fff;
+            width: 230px;
+        }
+
+        .mini-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.15rem;
+            margin-bottom: .9rem;
+        }
+
+        .mini-icons svg {
+            width: 23px;
+            height: 23px;
+            stroke: currentColor;
+        }
+
+        .mini-icons img {
+            width: 23px;
+            height: 23px;
+            object-fit: contain;
+        }
+
+        .barcode {
+            width: 190px;
+            height: 58px;
+            margin: -.2rem auto .2rem;
+            display: block;
+            object-fit: cover;
+        }
+
+        .collection {
+            width: 138px;
+            margin: 0 auto;
+            font-size: .48rem;
+            opacity: .7;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1200px) {
+            .brand {
+                font-size: 15vw;
+                top: 10vh;
+            }
+
+            .left-panel {
+                width: 30vw;
+                left: 5vw;
+            }
+
+            .bottom-left {
+                left: 5vw;
+                top: calc(35.2vh + 420px);
+            }
+
+            .product-card {
+                width: 25vw;
+                right: 5vw;
+                min-width: 245px;
+            }
+
+            .bottom-right {
+                right: calc(5vw + 24px);
+                top: calc(31.4vh + 345px);
+            }
+
+            .registered {
+                left: calc(50% + min(26vw, 335px));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                height: auto;
+                min-height: 1600px;
+            }
+
+            .top-left,
+            .top-center,
+            .top-right {
+                top: 28px;
+            }
+
+            .top-center {
+                width: 180px;
+                font-size: .64rem;
+            }
+
+            .brand {
+                font-size: 20vw;
+                top: 110px;
+            }
+
+            .registered {
+                top: 135px;
+                left: auto;
+                right: 9vw;
+            }
+
+            .left-panel {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: 85%;
+                margin: 250px auto 0;
+            }
+
+            .product-card {
+                position: relative;
+                right: auto;
+                top: auto;
+                width: 85%;
+                max-width: 320px;
+                margin: 70px auto;
+            }
+
+            .bottom-right {
+                position: relative;
+                right: auto;
+                top: auto;
+                bottom: auto;
+                width: 220px;
+                margin: 0 auto;
+                margin-bottom: 50px;
+            }
+
+            .bottom-left {
+                position: relative;
+                left: auto;
+                top: auto;
+                bottom: auto;
+                width: 85%;
+                margin: 50px auto;
+            }
+        }
+
+        p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            color: #d1d1d1;
+            max-width: 700px;
+            margin-top: 20px;
+            line-height: 1.6;
+            text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .mouse {
+            width: 25px;
+            height: 40px;
+            border: 2px solid white;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .wheel {
+            width: 3px;
+            height: 8px;
+            background: white;
+            border-radius: 2px;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 1.5s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-15px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-7px) translateX(-50%);
+            }
+        }
+
+        @keyframes scroll {
+            0% {
+                top: 6px;
+                opacity: 1;
+            }
+
+            100% {
+                top: 20px;
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism card for the last section */
+        .cta-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: black;
+            background: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- This canvas will render our image sequence -->
+    <canvas id="video-canvas"></canvas>
+
+    <div class="content">
+        <section class="hero">
+            <div class="top-left">
+                collection<br>001
+                <div class="line"></div>
+            </div>
+
+            <div class="top-center">
+                LAYERS, CULTURE &amp; IDENTITY<br>
+                IN EVERY THREAD
+            </div>
+
+            <div class="top-right">
+                est.<br>2024
+                <div class="line"></div>
+            </div>
+
+            <div class="brand">Layerstop</div>
+            <div class="registered">&reg;</div>
+
+            <div class="left-panel">
+                <h1>Designed<br>in Layers.<br>Made to<br>Stand Out.</h1>
+                <p>Layerstop blends culture, comfort, and creativity into timeless pieces. This is more than apparel. This is a movement.</p>
+
+                <div class="features">
+                    <div class="feature">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <path d="M12 3 21 8 12 13 3 8 12 3Z" />
+                                <path d="m21 12-9 5-9-5" />
+                                <path d="m21 16-9 5-9-5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Premium Quality</h3>
+                            <span>Handpicked materials for all-day comfort.</span>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="icon">
+                            <img src="./images/image-removebg-preview.png" alt="">
+                        </div>
+                        <div>
+                            <h3>Culture Driven</h3>
+                            <span>Inspired by art, music and street culture.</span>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <path d="M12 2l2.8 6.2 6.7.7-5 4.5 1.4 6.6-5.9-3.4L6.1 20l1.4-6.6-5-4.5 6.7-.7L12 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Limited Drops</h3>
+                            <span>Small batches. Big impact.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-left">
+                <div class="social-btn">
+                    <span>@layerstop.apparel</span>
+                    <span aria-hidden="true">→</span>
+                </div>
+                <div class="website">www.layerstop.com</div>
+            </div>
+
+            <aside class="product-card" aria-label="Featured product">
+                <div class="card-label">New Drop</div>
+                <div class="product-title">Cosmos<br>Tee</div>
+
+                <div class="thumbs">
+                    <div class="thumb active"><img src="./00001.png" alt="Featured t-shirt frame"></div>
+                    <div class="thumb"><img src="./00064.png" alt="Alternate t-shirt frame"></div>
+                    <div class="thumb"><img src="./00128.png" alt="Alternate t-shirt frame"></div>
+                </div>
+
+                <button class="shop-btn" type="button">
+                    <span>SHOP NOW</span>
+                    <span aria-hidden="true">→</span>
+                </button>
+            </aside>
+
+            <div class="bottom-right">
+                <div class="mini-icons">
+                    <img src="./images/image-removebg-preview.png" alt="">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
+                        <path d="M12 2v20M2 12h20" />
+                        <circle cx="12" cy="12" r="6" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
+                        <path d="M12 3 21 8 12 13 3 8 12 3Z" />
+                        <path d="m21 12-9 5-9-5" />
+                        <path d="m21 16-9 5-9-5" />
+                    </svg>
+                </div>
+                <img class="barcode" src="./images/image-removebg-preview (1).png" alt="">
+                <div class="collection">LAYERS / 001</div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <div class="section">
+            <h1>Engineered Design</h1>
+            <p>Every single thread is mapped in 3D space to guarantee the perfect drape and structure.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="section">
+            <h1>Breathable Tech</h1>
+            <p>Advanced micro-fibers allow for maximum airflow while maintaining a sleek, modern silhouette.</p>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="section">
+            <div class="cta-card">
+                <h1>Redefine Your Style</h1>
+                <p>Limited quantities available for the inaugural drop. Secure yours now.</p>
+                <a href="#" class="btn">Pre-Order Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const canvas = document.getElementById("video-canvas");
+            const context = canvas.getContext("2d");
+            let currentFrameIndex = 0;
+
+            // We have 192 frames in the directory
+            const frameCount = 192;
+
+            const startFrame = 1; // your first file is 00001.png
+
+            const currentFrame = index => (
+                `./${(index + startFrame).toString().padStart(5, '0')}.png`
+            );
+
+            const resizeCanvas = () => {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = Math.floor(window.innerWidth * dpr);
+                canvas.height = Math.floor(window.innerHeight * dpr);
+                canvas.style.width = `${window.innerWidth}px`;
+                canvas.style.height = `${window.innerHeight}px`;
+                context.setTransform(dpr, 0, 0, dpr, 0, 0);
+                updateImage(currentFrameIndex);
+            };
+
+            const drawCover = img => {
+                const canvasWidth = window.innerWidth;
+                const canvasHeight = window.innerHeight;
+                const scale = Math.max(canvasWidth / img.width, canvasHeight / img.height);
+                const width = img.width * scale;
+                const height = img.height * scale;
+                const x = (canvasWidth - width) / 2;
+                const y = (canvasHeight - height) / 2;
+
+                context.clearRect(0, 0, canvasWidth, canvasHeight);
+                context.drawImage(img, x, y, width, height);
+            };
+
+            // Array to store preloaded images
+            const images = [];
+            let imagesLoaded = 0;
+
+            // Preload all 192 images to ensure smooth scrolling playback
+            for (let i = 0; i < frameCount; i++) {
+                const img = new Image();
+                img.onload = () => {
+                    imagesLoaded++;
+                    // Once the first image is loaded, set canvas dimensions and draw it
+                    if (i === 0) {
+                        resizeCanvas();
+                    }
+                };
+                img.src = currentFrame(i);
+                images.push(img);
+            }
+
+            // Function to draw the specific frame onto the canvas
+            const updateImage = index => {
+                // Ensure the image is fully loaded before drawing to avoid blank frames
+                if (images[index] && images[index].complete) {
+                    currentFrameIndex = index;
+                    drawCover(images[index]);
+                }
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Listen to scroll events to update the frame
+            window.addEventListener('scroll', () => {
+                const scrollTop = html.scrollTop;
+                // Calculate max scrollable height (total height - viewport height)
+                const maxScrollTop = html.scrollHeight - window.innerHeight;
+
+                // Calculate how far down we've scrolled as a percentage (0 to 1)
+                const scrollFraction = Math.max(0, Math.min(1, scrollTop / maxScrollTop));
+
+                // Map the percentage to a specific frame index
+                const frameIndex = Math.min(
+                    frameCount - 1,
+                    Math.floor(scrollFraction * frameCount)
+                );
+
+                // Use requestAnimationFrame for smooth performance
+                requestAnimationFrame(() => updateImage(frameIndex));
+            });
+
+            // --- Scroll Animations for text sections ---
+            const sections = document.querySelectorAll('.section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Trigger when 50% of the section is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+
